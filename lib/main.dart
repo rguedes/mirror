@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:sizer/sizer.dart';
+import 'widgets/meeting_card.dart';
+import 'package:mirror/models/Meeting.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
-  runApp(MyApp());
+  runApp(LayoutBuilder(
+    //return LayoutBuilder
+    builder: (context, constraints) {
+      return OrientationBuilder(
+        //return OrientationBuilder
+        builder: (context, orientation) {
+          //initialize SizerUtil()
+          SizerUtil().init(constraints, orientation); //initialize SizerUtil
+          return MyApp();
+        },
+      );
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Mirror Call',
       color: Colors.white,
       theme: new ThemeData(scaffoldBackgroundColor: const Color(0xFF1C1F2E)),
       home: MyHomePage(title: 'Home'),
@@ -22,20 +39,11 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   Widget formatHomeIcon(IconData icon, String title, String subtitle, color) {
     return TextButton(
-      onPressed: ()=>print(title),
+      onPressed: () => print(title),
       child: Container(
         width: 180.0,
         height: 180.0,
@@ -68,7 +76,6 @@ class MyHomePage extends StatefulWidget {
                   Text(subtitle, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100)),
                 ],
               ),
-
             ],
           ),
         ),
@@ -116,7 +123,6 @@ class MyHomePage extends StatefulWidget {
   }
 
   Widget formatIcon(IconData icon) {
-
     return Container(
       width: 50.0,
       height: 50.0,
@@ -154,6 +160,7 @@ class TrapeziumClipper extends CustomClipper<Path> {
     path.close();
     return path;
   }
+
   @override
   bool shouldReclip(TrapeziumClipper oldClipper) => false;
 }
@@ -161,20 +168,36 @@ class TrapeziumClipper extends CustomClipper<Path> {
 class _MyHomePageState extends State<MyHomePage> {
   String _timeString;
   String _dateString;
+  List<Meeting>meetings = [];
+
+  loadJson() async {
+    String data = await rootBundle.loadString('assets/data/meetings.json');
+    return json.decode(data);
+  }
 
   @override
   void initState() {
+    loadMeetings();
     _timeString = _formatDateTime(DateTime.now(), 'kk:mm');
     _dateString = _formatDateTime(DateTime.now(), 'EEEE, dd MMMM y');
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
   }
 
+  void loadMeetings() async{
+    final jsonResponse = await loadJson();
+    final met = List.from(jsonResponse).map((element)=>Meeting.fromJSON(element)).toList();
+    met.sort((a, b) => a.startAt.millisecondsSinceEpoch.compareTo(b.startAt.millisecondsSinceEpoch));
+    setState(() {
+      meetings = met;
+    });
+  }
+
   void _getTime() {
     final DateTime now = DateTime.now();
     setState(() {
       _timeString = _formatDateTime(now, 'kk:mm');
-      _dateString =_formatDateTime(now, 'EEEE, dd MMMM y');
+      _dateString = _formatDateTime(now, 'EEEE, dd MMMM y');
     });
   }
 
@@ -273,13 +296,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: (MediaQuery.of(context).size.width - 100.0) / 2,
+                    width: (MediaQuery.of(context).size.width - 100.0) * 0.4,
                     height: MediaQuery.of(context).size.height - 80.0,
+                    alignment: Alignment.topCenter,
                     decoration: BoxDecoration(
                       // color: Colors.white,
                       border: Border(
                         right: BorderSide(
-                          //                    <--- top side
                           color: Color(0xFF6c6f79).withOpacity(0.3),
                           width: 1.0,
                         ),
@@ -302,13 +325,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   Container(
-                    width: (MediaQuery.of(context).size.width - 100.0) / 2,
+                    width: (MediaQuery.of(context).size.width - 100.0) * 0.6,
                     height: MediaQuery.of(context).size.height - 80.0,
                     child: Padding(
                       padding: const EdgeInsets.all(45.0),
                       child: SingleChildScrollView(
                         child: Column(
-                          // spacing: 30.0,
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -322,7 +344,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       height: 170.0,
                                       alignment: Alignment.centerRight,
                                       decoration: BoxDecoration(
-                                      // color: Colors.white,
+                                        // color: Colors.white,
                                         borderRadius: BorderRadius.circular(15),
                                         color: Color(0xFF45555e),
                                       ),
@@ -350,8 +372,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                       ),
                                     ),
-
-
                                   ],
                                 ),
                                 decoration: BoxDecoration(
@@ -361,64 +381,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Container(
-                                width: ((MediaQuery.of(context).size.width - 100.0) / 2 - 110),
-                                height: 200.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.camera,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(0xFF212534),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Container(
-                                width: ((MediaQuery.of(context).size.width - 100.0) / 2 - 110),
-                                height: 200.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.camera,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(0xFF212534),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Container(
-                                width: ((MediaQuery.of(context).size.width - 100.0) / 2 - 110),
-                                height: 200.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.camera,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  // color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Color(0xFF212534),
-                                ),
-                              ),
-                            ),
-                          ],
+                            ]
+                            ..addAll( meetings.map((item) => MeetingCard(meeting: item) ).toList() )
                         ),
                       ),
                     ),
