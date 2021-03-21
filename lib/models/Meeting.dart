@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:calendar_time/calendar_time.dart';
+import 'Person.dart';
 
 class Meeting {
 
@@ -16,11 +17,13 @@ class Meeting {
       title = jsonMap['title'];
       startAt = DateTime.parse(jsonMap['start_at']);
       finishAt = DateTime.parse(jsonMap['finish_at']);
-      persons = jsonMap['persons'];
+      persons = List.from(jsonMap['persons'])
+          .map((element) => Person.fromJson(element))
+          .toList();
     }catch (e){
-      persons = [];
+      id = null;
+      persons = <Person>[];
       title = "";
-      id = "";
       startAt = DateTime.now();
       finishAt = DateTime.now();
     }

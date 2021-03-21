@@ -6,36 +6,52 @@
     "finish_at": "2021-03-22 16:00:00",
     "persons": [
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "http://www.nretnil.com/avatar/LawrenceEzekielAmos.png"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Joaquim Almeida",
+        "avatar": "http://www.nretnil.com/avatar/mark_headshot.jpg"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Tony Ramos",
+        "avatar": "https://icotar.com/avatar/9f85j5ah3mlwiq0c.png?s=100"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "https://icotar.com/avatar/uucs7oanalvd4lpb.png?s=100"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "https://icotar.com/avatar/craig.png?s=100"
       }
     ]
   },
   {
     "id": "5555-5555-5555",
     "title": "Daily Standup Tech Conference",
-    "start_at": "2021-03-21 08:30:00",
-    "finish_at": "2021-03-21 09:00:00",
+    "start_at": "2021-03-23 08:30:00",
+    "finish_at": "2021-03-23 09:00:00",
     "persons": [
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "https://icotar.com/avatar/craig.png?s=100"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "https://icotar.com/avatar/craig.png?s=100"
       },
       {
-        "id": "1111"
+        "id": "1111",
+        "name": "Mike Davis",
+        "avatar": "https://icotar.com/avatar/craig.png?s=100"
       }
     ]
   }
