@@ -45,8 +45,7 @@ class _SidebarState extends State<Sidebar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.0,
-      height: double.infinity,
+      width: 100,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -69,12 +68,20 @@ class _SidebarState extends State<Sidebar> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10.0,
+          // SizedBox(
+          //   height: 10.0,
+          // ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                widget.menuIcon(Icons.home_filled, active: true),
+                widget.menuIcon(Icons.message_outlined),
+                widget.menuIcon(Icons.watch_later_outlined),
+              ],
+            ),
           ),
-          widget.menuIcon(Icons.home_filled, active: true),
-          widget.menuIcon(Icons.message_outlined),
-          widget.menuIcon(Icons.watch_later_outlined),
+          widget.menuIcon(Icons.settings),
         ],
       ),
       decoration: BoxDecoration(

@@ -105,55 +105,58 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Topbar(title: "Home"),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 100.0) * 0.45,
-                        height: MediaQuery.of(context).size.height - 80.0,
-                        alignment: Alignment.topCenter,
-                        decoration: BoxDecoration(
-                          // color: Colors.white,
-                          border: Border(
-                            right: BorderSide(
-                              color: Color(0xFF6c6f79).withOpacity(0.3),
-                              width: 1.0,
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: (MediaQuery.of(context).size.width - 100.0) * 0.45,
+                          height: MediaQuery.of(context).size.height - 80.0,
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            // color: Colors.white,
+                            border: Border(
+                              right: BorderSide(
+                                color: Color(0xFF6c6f79).withOpacity(0.3),
+                                width: 1.0,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(45.0),
-                          child: SingleChildScrollView(
-                            child: Wrap(
-                              spacing: 30.0,
-                              runSpacing: 30.0,
-                              children: [
-                                widget.formatHomeIcon(Icons.photo_camera_front, "New Metting", "set up new metting", 0xFFff742e),
-                                widget.formatHomeIcon(Icons.add_box_rounded, "Join Metting", "via invitation link", 0xFF0e78f9),
-                                widget.formatHomeIcon(Icons.more_time, "Schedule", "plan your mettings", 0xFF0e78f9),
-                                widget.formatHomeIcon(Icons.screen_share, "Share Screen", "show your work", 0xFF0e78f9),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 100.0) * 0.55,
-                        height: MediaQuery.of(context).size.height - 80.0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(45.0),
-                          child: SingleChildScrollView(
-                            child: Wrap(
-                                runSpacing: 20.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(45.0),
+                            child: SingleChildScrollView(
+                              child: Wrap(
+                                spacing: 30.0,
+                                runSpacing: 30.0,
                                 children: [
-                                  Clock(),
-                                ]..addAll(meetings.map((item) => MeetingCard(meeting: item)).toList())),
+                                  widget.formatHomeIcon(Icons.photo_camera_front, "New Metting", "set up new metting", 0xFFff742e),
+                                  widget.formatHomeIcon(Icons.add_box_rounded, "Join Metting", "via invitation link", 0xFF0e78f9),
+                                  widget.formatHomeIcon(Icons.more_time, "Schedule", "plan your mettings", 0xFF0e78f9),
+                                  widget.formatHomeIcon(Icons.screen_share, "Share Screen", "show your work", 0xFF0e78f9),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                    //body
+                        Container(
+                          width: (MediaQuery.of(context).size.width - 100.0) * 0.55,
+                          height: MediaQuery.of(context).size.height - 80.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(45.0),
+                            child: SingleChildScrollView(
+                              child: Wrap(
+                                  runSpacing: 20.0,
+                                  children: [
+                                    Clock(),
+                                  ]..addAll(meetings.map((item) => MeetingCard(meeting: item)).toList())),
+                            ),
+                          ),
+                        ),
+                      ],
+                      //body
+                    ),
                   ),
                 ],
               ),
